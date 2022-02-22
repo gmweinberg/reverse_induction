@@ -1,0 +1,11 @@
+This project is an attempt to solve a class of problems with the followiing characteristics:
+The game is played starting at some node on a directed acyclic graph.
+Two player alternate making moves along the edges of the graph. The graph ends when a player moves to a terminal node, which may be a "winner" or "loser".
+
+The method to solve is reverse-induction: If a player can move to a winning terminal node, that node is a winning node (for the player on the move).If he can only move to nodes which are terminally lost or won for the other player, it is a losing node.
+Since the graph is a DAG, every node is at most n moves away from a terminal node. 
+So we classify nodes as winners or losers for the player on the move. in order of n.
+
+I think my algorithm scales as n cubed so it only works for relatively small graphs. No doubt with a decen heuristic we could do much better.
+
+
