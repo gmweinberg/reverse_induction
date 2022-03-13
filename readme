@@ -6,6 +6,6 @@ The method to solve is reverse-induction: If a player can move to a winning term
 Since the graph is a DAG, every node is at most n moves away from a terminal node. 
 So we classify nodes as winners or losers for the player on the move. in order of n.
 
-I think my algorithm scales as n cubed so it only works for relatively small graphs. No doubt with a decen heuristic we could do much better.
+I think my algorithm scales as n cubed so it only works for relatively small graphs. No doubt with a decent heuristic we could do much better.
 
 
