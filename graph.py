@@ -27,7 +27,8 @@ class Graph(object):
                 node = self.nodes[key]
                 if node.analyzed:
                     continue
-                for node2 in self.get_successors(node):
+                for key in self.get_successors(node):
+                    node2 = self.nodes[key]
                     if node2.terminal and node2.winner:
                         node.analyzed = True
                         node.winner = True
@@ -38,7 +39,8 @@ class Graph(object):
                 if node.analyzed:
                     continue
                 progress = True
-                for node2 in self.get_successors(node):
+                for key in self.get_successors(node):
+                    node2 = self.nodes[key]
                     if not node2.analyzed:
                         progress = False
                         break
@@ -69,7 +71,8 @@ class Graph(object):
         if name not in self.nodes:
             self.generate_node(name)
         node_ = self.nodes[name]
-        for node2 in self.get_successors(node_):
+        for key in self.get_successors(node_):
+            node2 = self.nodes[key]
             loser = True
             if node2.terminal and node2.winner:
                 node_.winner = True

@@ -59,14 +59,14 @@ class LastCoin(Graph):
                 used.add(childname)
                 if childname in self.nodes:
                     #print("appending {}".format(childname))
-                    result.append(self.nodes[childname])
+                    result.append(childname)
                 else:
                     node = self.generate_node(childname)
                     self.nodes[childname] = node
                     #print("appending {}".format(childname))
-                    result.append(node)
+                    result.append(childname)
         if len(lname) == 1 and lname[0] in [1,2]:
-            result.append(self.nodes[tuple()])
+            result.append(tuple())
         return result
 
 

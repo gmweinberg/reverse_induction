@@ -19,14 +19,14 @@ class CTB(Graph):
                     node = Node(name)
                 self.nodes[name] = node
 
-    def get_successors(self, node) -> Node:
+    def get_successors(self, node) -> list:
         x = node.name[0]
         y = node.name[1]
         suc = []
         for ii in range(x-1, -1, -1):
-            suc.append(self.nodes[(ii, y)])
+            suc.append((ii, y))
         for iii in range(y-1, -1, -1):
-            suc.append(self.nodes[(x, iii)])
+            suc.append((x, iii))
         return suc
 
 if __name__ == '__main__':
