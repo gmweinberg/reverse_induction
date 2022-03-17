@@ -6,11 +6,15 @@
 from graph import Graph
 from node import Node
 class CTB(Graph):
-    def __init__(self):
-        self.nodes = {} 
-        for ii in range(6):
-            for iii in range(12):
-                name = (ii, iii) # use tuple as name, why not?
+    def __init__(self, rows, columns, **kwargs):
+        super().__init__(**kwargs)
+        self.rows = rows
+        self.columns = columns
+
+    def generate_graph(self):
+        for ii in range(self.columns):
+            for iii in range(self.rows):
+                name = (ii, iii)
                 if ii == 0 and iii == 0:
                     node = Node(name, terminal=True, winner=True)
                 elif ii == iii:
@@ -30,7 +34,8 @@ class CTB(Graph):
         return suc
 
 if __name__ == '__main__':
-    ctb = CTB()
+    ctb = CTB(6, 12)
+    ctb.generate_graph()
     ctb.verbose = True
     ctb.analyze()
 

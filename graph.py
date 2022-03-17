@@ -9,6 +9,7 @@ class Graph(object):
             self.verbose = kwargs["verbose"]
         else:
             self.verbose = False
+        self.counter = 0
  
     def get_previous(self, node):
         """Get all nodes that can reach the given node"""
@@ -60,6 +61,10 @@ class Graph(object):
                     if self.verbose:
                         print("Node {} is a loser".format(node.name))
 
+    def generate_graph(self):
+        """Add all nodes to the graph"""
+        raise Exception("not implemented")
+
     def generate_node(self, name):
         """create a new node with the given name and add it to the dictionary."""
         node_ = Node(name)
@@ -68,12 +73,16 @@ class Graph(object):
 
     def solve_from(self, name)-> bool:
         """Determine whether this node is a winner or loser. Generate new nodes if necessary."""
+        self.counter += 1
+        if True: #self.counter % 100 == 0:
+            print('solve_from {} counter {}'.format(name, self.counter))
         if name not in self.nodes:
             self.generate_node(name)
         node_ = self.nodes[name]
         for key in self.get_successors(node_):
+            if key not in self.nodes:
+                self.generate_node(key)
             node2 = self.nodes[key]
-            loser = True
             if node2.terminal and node2.winner:
                 node_.winner = True
                 node_.analyzed = True
@@ -84,7 +93,6 @@ class Graph(object):
             if node2.analyzed:
                 bad = node2.winner
                 if not bad:
-                    loser = False
                     node_.analyzed = True
                     node_.winner = True
                     print('node {} is a winner. send to loser {}'.format(node_.name, node2.name))
@@ -92,9 +100,9 @@ class Graph(object):
             else:
                 bad = self.solve_from(node2.name)
                 if not bad:
-                    loser = False
                     node_.analyzed = True
                     node_.winner = True
+                    print('node {} is a winner. send to loser {}'.format(node_.name, node2.name))
                     return True
         node_.analyzed = True
         node_.winner = False
