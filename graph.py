@@ -110,3 +110,10 @@ class Graph(object):
             print('node {} is a loser'.format(node_.name))
         return False
 
+    def get_terminal_nodes(self):
+        """Generate terminal nodes"""
+        for key in self.nodes:
+            node = self.nodes[key]
+            if node.terminal:
+                yield node
+
