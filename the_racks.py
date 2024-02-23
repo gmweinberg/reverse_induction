@@ -25,6 +25,7 @@ class TheRacks(Graph):
         self.columns = columns
         self.maxmax = None
         self.added = 0
+        self.generate_node( kwargs['default_start'])
 
     def  get_successors(self, node, includeTerminals=True) -> list:
         """Return the names of child nodes for the given node."""
@@ -123,32 +124,33 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--max', action='store_true', dest='max_')
     parser.add_argument('--analyze', action='store_true')
-    parser.add_argument('--terminal', action='store_true', help="list termnal nodes")
+    parser.add_argument('--victory', action='store_true', help="show victory path")
+    parser.add_argument('--terminal', action='store_true', help="list terminal nodes")
     args = parser.parse_args()
     started = time.time()
-    theRacks = TheRacks(columns=args.columns, verbose=args.verbose)
     #print([name for name in theRacks.nodes])
+    default_start = None
+    if args.start:
+        default_start = literal_eval(args.start)
+    theRacks = TheRacks(columns=args.columns, verbose=args.verbose, default_start = default_start)
     try:
         if args.random:
             startfrom = theRacks.random_path(args.random)
             print('starting from random ', startfrom)
             theRacks.add_children(startfrom)
             print('maxmax', theRacks.maxmax)
-        elif args.start:
-            name = literal_eval(args.start)
-            theRacks.generate_node(name)
-            theRacks.add_children(name)
-            print('maxmax', theRacks.maxmax)
-        else:
-
-            theRacks.generate_graph()
-            if args.analyze:
+        if args.max_ or args.analyze:
+            theRacks.generate_graph(default_start)
+        if args.analyze:
                 theRacks.analyze()
-            if args.max_:
+        if args.victory:
+            theRacks.show_victory_path()
+        if args.max_:
                 print(theRacks.maxmax)
-            if args.terminal:
-                for node in theRacks.get_terminal_nodes():
-                    print(node.name)
+        if args.terminal:
+            for node in theRacks.get_terminal_nodes():
+                print(node.name)
+
     except Exception as ex:
         raise
         print(ex)

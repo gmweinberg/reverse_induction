@@ -11,6 +11,7 @@ class Graph(object):
             self.verbose = False
         self.default_start = kwargs.get('default_start')
         self.counter = 0
+        self.analyzed = False
  
     def get_previous(self, node):
         """Get all nodes that can reach the given node"""
@@ -61,6 +62,34 @@ class Graph(object):
                     done = False
                     if self.verbose:
                         print("Node {} is a loser".format(node.name))
+        self.analyzed = True
+
+    def show_victory_path(self, start=None):
+        """The victory path is the subset of the tree where the player with a forced win always
+           makes a winning move. We must call analyze before making this call."""
+        if not self.analyzed:
+            self.analyze()
+        if start is None:
+            start = self.default_start
+        node = self.nodes[start]
+        if node.terminal:
+            if self.verbose:
+                print('terminal node {} winner {}'.format(start, node.winner))
+        else:
+            childs = self.get_successors(node)
+            if not node.winner:
+                print('node {} is a loser'.format(start))
+                for child in childs:
+                    self.show_victory_path(child)
+            else:
+                for child in childs:
+                    newnode = self.nodes[child]
+                    if not newnode.terminal:
+                        if not newnode.winner:
+                            print("node {} is winner (move to loser {}) ".format(start, newnode.name))
+                            self.show_victory_path(child)
+                            break
+
 
     def generate_graph(self):
         """Add all nodes to the graph"""
@@ -72,10 +101,13 @@ class Graph(object):
         self.nodes[name] = node_
         return node_
 
-    def solve_from(self, name)-> bool:
+    def solve_from(self, name=None)-> bool:
         """Determine whether this node is a winner or loser. Generate new nodes if necessary."""
+        # This seems not to be working, I get too much recursion.
+        if name is None:
+            name = self.default_start
         self.counter += 1
-        if True: #self.counter % 100 == 0:
+        if False: #self.counter % 100 == 0:
             print('solve_from {} counter {}'.format(name, self.counter))
         if name not in self.nodes:
             self.generate_node(name)
