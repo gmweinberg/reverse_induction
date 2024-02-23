@@ -9,6 +9,7 @@ class Graph(object):
             self.verbose = kwargs["verbose"]
         else:
             self.verbose = False
+        self.default_start = kwargs.get('default_start')
         self.counter = 0
  
     def get_previous(self, node):
